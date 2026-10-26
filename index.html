@@ -1,0 +1,514 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serentica | Site Manpower Management</title>
+<style>
+:root {
+  --navy: #142b45;
+  --blue: #245b84;
+  --gold: #d6a843;
+  --bg: #f4f6f9;
+  --white: #ffffff;
+  --text: #243447;
+  --muted: #748196;
+  --border: #e4e9f0;
+  --green: #18845b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+.app { display: flex; min-height: 100vh; }
+.sidebar {
+  width: 245px;
+  background: var(--navy);
+  color: white;
+  padding: 25px 15px;
+  flex-shrink: 0;
+}
+.brand {
+  padding: 0 12px 28px;
+  border-bottom: 1px solid #ffffff25;
+}
+.brand h2 { margin: 0; font-size: 22px; letter-spacing: 1px; }
+.brand p { margin: 8px 0 0; font-size: 11px; color: #c4d1df; }
+.nav-label {
+  margin: 25px 12px 10px;
+  color: #a9b8ca;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.nav-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  color: #d8e2ee;
+  background: transparent;
+  border: 0;
+  padding: 13px 12px;
+  margin: 3px 0;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.nav-item:hover, .nav-item.active {
+  background: #ffffff17;
+  color: white;
+}
+.nav-item.active { border-left: 3px solid var(--gold); }
+.main { flex: 1; min-width: 0; }
+.topbar {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  min-height: 76px;
+  padding: 17px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+.topbar h3 { margin: 0; font-size: 18px; }
+.topbar p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+.profile { font-size: 13px; font-weight: bold; }
+.profile span { color: var(--muted); font-weight: normal; }
+.content { padding: 28px 30px; max-width: 1500px; margin: auto; }
+.heading {
+  display: flex; justify-content: space-between;
+  align-items: center; gap: 16px; flex-wrap: wrap;
+  margin-bottom: 23px;
+}
+.heading h1 { margin: 0; font-size: 25px; }
+.heading p { color: var(--muted); margin: 7px 0 0; font-size: 13px; }
+select, input {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: white;
+  padding: 11px 12px;
+  font-size: 13px;
+  color: var(--text);
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 17px;
+  margin-bottom: 25px;
+}
+.card {
+  background: white;
+  padding: 21px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px #152a4006;
+}
+.card-top { display: flex; justify-content: space-between; gap: 10px; }
+.card-label { color: var(--muted); font-size: 12px; }
+.card-icon {
+  width: 35px; height: 35px; display: grid; place-items: center;
+  border-radius: 8px; background: #edf3f8; color: var(--blue);
+}
+.metric { font-size: 29px; font-weight: bold; margin: 16px 0 8px; }
+.card-note { font-size: 11px; color: var(--muted); }
+.panel {
+  background: white; border: 1px solid var(--border);
+  border-radius: 10px; margin-bottom: 23px; overflow: hidden;
+}
+.panel-head {
+  padding: 20px 22px; display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.panel-head h2 { margin: 0; font-size: 16px; }
+.panel-head p { margin: 6px 0 0; font-size: 12px; color: var(--muted); }
+.panel-body { padding: 20px 22px; }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 700px; }
+th {
+  text-align: left; background: #f8fafc; color: var(--muted);
+  font-size: 10px; letter-spacing: .6px; text-transform: uppercase;
+  padding: 13px 15px; white-space: nowrap;
+}
+td { padding: 15px; border-top: 1px solid var(--border); font-size: 12px; }
+.employee { font-weight: bold; font-size: 13px; }
+.sub { color: var(--muted); margin-top: 5px; font-size: 11px; }
+.pill {
+  display: inline-block; border-radius: 20px; padding: 6px 9px;
+  font-size: 10px; font-weight: bold;
+}
+.available { color: #14734f; background: #e8f7ef; }
+.deployed { color: #245b84; background: #eaf2fb; }
+.pending { color: #94660c; background: #fff4d7; }
+.btn {
+  border: 0; border-radius: 6px; padding: 11px 15px;
+  cursor: pointer; font-size: 12px; font-weight: bold;
+}
+.btn-primary { background: var(--navy); color: white; }
+.btn-primary:hover { background: var(--blue); }
+.btn-light { background: #edf2f7; color: var(--navy); }
+.toolbar { display: flex; gap: 10px; flex-wrap: wrap; }
+.toolbar input { min-width: 220px; }
+.two-col { display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; }
+.site-row { margin-bottom: 22px; }
+.site-row:last-child { margin-bottom: 0; }
+.site-line { display: flex; justify-content: space-between; gap: 10px; font-size: 12px; margin-bottom: 9px; }
+.track { height: 8px; background: #edf0f5; border-radius: 10px; overflow: hidden; }
+.fill { height: 100%; background: var(--blue); border-radius: 10px; }
+.activity { display: flex; gap: 12px; padding: 13px 0; border-bottom: 1px solid var(--border); }
+.activity:last-child { border-bottom: 0; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--gold); margin-top: 4px; flex-shrink: 0; }
+.activity strong { font-size: 12px; }
+.activity p { margin: 5px 0 0; font-size: 11px; color: var(--muted); }
+.page { display: none; }
+.page.active { display: block; }
+.empty { text-align: center; padding: 40px 15px; color: var(--muted); font-size: 13px; }
+.form-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
+.field { display: flex; flex-direction: column; gap: 7px; }
+.field label { font-size: 12px; font-weight: bold; }
+.field input, .field select { width: 100%; }
+.form-actions { margin-top: 20px; display: flex; gap: 10px; }
+.notice {
+  padding: 12px 15px; background: #fff8e7; border: 1px solid #f1dfb5;
+  border-radius: 7px; color: #795d21; font-size: 12px; margin-bottom: 18px;
+}
+@media(max-width:1100px) {
+  .cards { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .two-col { grid-template-columns: 1fr; }
+}
+@media(max-width:700px) {
+  .app { display: block; }
+  .sidebar { width: 100%; padding: 15px; }
+  .brand { padding-bottom: 15px; }
+  .nav-label { margin-top: 15px; }
+  .topbar { padding: 15px; }
+  .content { padding: 20px 14px; }
+  .cards { gap: 10px; }
+  .card { padding: 14px; }
+  .metric { font-size: 24px; }
+  .form-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <h2>SERENTICA</h2>
+      <p>SITE MANPOWER MANAGEMENT</p>
+    </div>
+    <div class="nav-label">Workspace</div>
+    <button class="nav-item active" data-page="dashboard">▦ &nbsp; Dashboard</button>
+    <button class="nav-item" data-page="employees">♙ &nbsp; Employee Directory</button>
+    <button class="nav-item" data-page="deployment">⇄ &nbsp; Deployment Requests</button>
+    <button class="nav-item" data-page="availability">◷ &nbsp; Availability</button>
+    <div class="nav-label">Organisation</div>
+    <button class="nav-item" data-page="organisation">⌂ &nbsp; Organisation Structure</button>
+    <button class="nav-item" data-page="reports">▤ &nbsp; Reports</button>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <h3 id="topTitle">Dashboard</h3>
+        <p>Site operations and workforce overview</p>
+      </div>
+      <div class="profile">Workforce Operations<br><span>Renewable Energy Projects</span></div>
+    </header>
+
+    <div class="content">
+      <section class="page active" id="dashboard">
+        <div class="heading">
+          <div>
+            <h1>Manpower Overview</h1>
+            <p>Monitor workforce allocation and availability across project sites.</p>
+          </div>
+          <select id="siteFilter" aria-label="Filter by site">
+            <option value="All">All Project Sites</option>
+            <option value="Koppal">Koppal</option>
+            <option value="Fatehgarh">Fatehgarh</option>
+          </select>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <div class="card-top"><span class="card-label">Total Employees</span><span class="card-icon">♙</span></div>
+            <div class="metric" id="totalMetric">0</div>
+            <div class="card-note">Registered workforce</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><span class="card-label">Currently Deployed</span><span class="card-icon">⇄</span></div>
+            <div class="metric" id="deployedMetric">0</div>
+            <div class="card-note">Assigned to project sites</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><span class="card-label">Available</span><span class="card-icon">✓</span></div>
+            <div class="metric" id="availableMetric">0</div>
+            <div class="card-note">Available for allocation</div>
+          </div>
+          <div class="card">
+            <div class="card-top"><span class="card-label">Pending Requests</span><span class="card-icon">◷</span></div>
+            <div class="metric" id="pendingMetric">0</div>
+            <div class="card-note">Awaiting review</div>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head"><div><h2>Site-wise Workforce</h2><p>Employee allocation by project site</p></div></div>
+            <div class="panel-body" id="siteBars"></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><div><h2>Recent Activity</h2><p>Latest workforce updates</p></div></div>
+            <div class="panel-body" id="activityList"></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><div><h2>Workforce Directory</h2><p>Current employee allocation overview</p></div><button class="btn btn-light" onclick="showPage('employees')">View Directory →</button></div>
+          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Employee ID</th><th>Department</th><th>Project Site</th><th>Availability</th></tr></thead><tbody id="dashboardTable"></tbody></table></div>
+        </div>
+      </section>
+
+      <section class="page" id="employees">
+        <div class="heading">
+          <div><h1>Employee Directory</h1><p>View and manage workforce records.</p></div>
+          <button class="btn btn-primary" id="addEmployeeBtn">+ Add Employee</button>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div><h2>Employee Records</h2><p>Search and filter registered employees.</p></div>
+            <div class="toolbar"><input id="employeeSearch" placeholder="Search name or employee ID..." /><select id="employeeSite"><option value="All">All Sites</option><option>Koppal</option><option>Fatehgarh</option></select></div>
+          </div>
+          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Employee ID</th><th>Department</th><th>Role</th><th>Project Site</th><th>Status</th></tr></thead><tbody id="employeeTable"></tbody></table></div>
+        </div>
+        <div class="panel" id="employeeFormPanel" style="display:none">
+          <div class="panel-head"><div><h2>Add Employee Record</h2><p>Enter authorised workforce information.</p></div></div>
+          <div class="panel-body">
+            <form id="employeeForm">
+              <div class="form-grid">
+                <div class="field"><label for="empName">Full Name</label><input id="empName" required /></div>
+                <div class="field"><label for="empId">Employee ID</label><input id="empId" required /></div>
+                <div class="field"><label for="empDept">Department</label><input id="empDept" required /></div>
+                <div class="field"><label for="empRole">Role / Designation</label><input id="empRole" required /></div>
+                <div class="field"><label for="empSite">Project Site</label><select id="empSite" required><option value="Koppal">Koppal</option><option value="Fatehgarh">Fatehgarh</option><option value="Head Office">Head Office</option></select></div>
+                <div class="field"><label for="empStatus">Availability</label><select id="empStatus"><option value="Available">Available</option><option value="Deployed">Deployed</option></select></div>
+              </div>
+              <div class="form-actions"><button class="btn btn-primary" type="submit">Save Employee</button><button class="btn btn-light" type="button" id="cancelEmployee">Cancel</button></div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="deployment">
+        <div class="heading"><div><h1>Deployment Requests</h1><p>Track workforce deployment and recall requests.</p></div><button class="btn btn-primary" id="newRequestBtn">+ New Request</button></div>
+        <div class="panel">
+          <div class="panel-head"><div><h2>Request Register</h2><p>Review request details and current status.</p></div></div>
+          <div class="table-wrap"><table><thead><tr><th>Request ID</th><th>Employee ID</th><th>Request Type</th><th>From Site</th><th>To Site</th><th>Status</th></tr></thead><tbody id="requestTable"></tbody></table></div>
+        </div>
+        <div class="panel" id="requestFormPanel" style="display:none">
+          <div class="panel-head"><div><h2>Create Workforce Request</h2><p>Submit a deployment or recall request for review.</p></div></div>
+          <div class="panel-body">
+            <form id="requestForm">
+              <div class="form-grid">
+                <div class="field"><label for="requestType">Request Type</label><select id="requestType"><option>Deployment</option><option>Recall</option></select></div>
+                <div class="field"><label for="requestEmployee">Employee</label><select id="requestEmployee" required></select></div>
+                <div class="field"><label for="requestSite">Destination Site</label><select id="requestSite"><option>Koppal</option><option>Fatehgarh</option><option>Head Office</option></select></div>
+                <div class="field"><label for="requestReason">Business Justification</label><input id="requestReason" required /></div>
+              </div>
+              <div class="form-actions"><button class="btn btn-primary" type="submit">Submit Request</button><button class="btn btn-light" type="button" id="cancelRequest">Cancel</button></div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section class="page" id="availability">
+        <div class="heading"><div><h1>Workforce Availability</h1><p>Review current employee availability and site allocation.</p></div></div>
+        <div class="panel"><div class="panel-head"><div><h2>Availability Register</h2><p>Availability is based on the latest saved employee status.</p></div></div>
+          <div class="table-wrap"><table><thead><tr><th>Employee</th><th>Employee ID</th><th>Department</th><th>Project Site</th><th>Availability</th></tr></thead><tbody id="availabilityTable"></tbody></table></div>
+        </div>
+      </section>
+
+      <section class="page" id="organisation">
+        <div class="heading"><div><h1>Organisation Structure</h1><p>Illustrative functional view of site workforce reporting.</p></div></div>
+        <div class="notice">This structure is illustrative and should be validated against the approved organisational chart before operational use.</div>
+        <div class="cards">
+          <div class="card"><div class="card-label">Project Leadership</div><div class="metric" style="font-size:19px">Project Manager</div><div class="card-note">Overall site coordination</div></div>
+          <div class="card"><div class="card-label">Execution</div><div class="metric" style="font-size:19px">Site Leads</div><div class="card-note">Work allocation and requests</div></div>
+          <div class="card"><div class="card-label">Workforce</div><div class="metric" style="font-size:19px">Team Members</div><div class="card-note">Site and functional teams</div></div>
+          <div class="card"><div class="card-label">Administration</div><div class="metric" style="font-size:19px">Admin</div><div class="card-note">Read-only workforce visibility</div></div>
+        </div>
+      </section>
+
+      <section class="page" id="reports">
+        <div class="heading"><div><h1>Reports & Data</h1><p>Export current workforce registers for further analysis.</p></div></div>
+        <div class="cards">
+          <div class="card"><h3>Employee Register</h3><p class="card-note">Export employee information currently saved in this browser.</p><button class="btn btn-primary" onclick="exportEmployees()">Export CSV</button></div>
+          <div class="card"><h3>Request Register</h3><p class="card-note">Export deployment and recall requests.</p><button class="btn btn-primary" onclick="exportRequests()">Export CSV</button></div>
+        </div>
+        <div class="notice">Records are stored in this browser only. This website does not yet have a shared database or company sign-in.</div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script>
+const initialEmployees = [
+  {name:"Arjun Kumar",id:"EMP1001",dept:"Civil",role:"Site Engineer",site:"Koppal",status:"Deployed"},
+  {name:"Meera Sharma",id:"EMP1002",dept:"Electrical",role:"Electrical Engineer",site:"Koppal",status:"Available"},
+  {name:"Rohan Singh",id:"EMP1003",dept:"Mechanical",role:"Field Engineer",site:"Fatehgarh",status:"Deployed"},
+  {name:"Ananya Rao",id:"EMP1004",dept:"HSE",role:"Safety Officer",site:"Koppal",status:"Deployed"},
+  {name:"Vikram Patel",id:"EMP1005",dept:"Civil",role:"Site Supervisor",site:"Fatehgarh",status:"Available"},
+  {name:"Priya Nair",id:"EMP1006",dept:"Planning",role:"Planning Engineer",site:"Koppal",status:"Available"}
+];
+let employees = load("serenticaEmployees", initialEmployees);
+let requests = load("serenticaRequests", []);
+let activities = load("serenticaActivities", [
+  {title:"Workforce register initialised",detail:"Employee directory is ready for authorised records."}
+]);
+function load(key,fallback) {
+  try { const value=localStorage.getItem(key); return value?JSON.parse(value):fallback; }
+  catch(e) { return fallback; }
+}
+function saveAll() {
+  localStorage.setItem("serenticaEmployees",JSON.stringify(employees));
+  localStorage.setItem("serenticaRequests",JSON.stringify(requests));
+  localStorage.setItem("serenticaActivities",JSON.stringify(activities));
+}
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+function statusPill(status) {
+  const cls=status==="Available"?"available":status==="Deployed"?"deployed":"pending";
+  return `<span class="pill ${cls}">${escapeHTML(status)}</span>`;
+}
+function filteredEmployees(site="All",search="") {
+  const q=search.trim().toLowerCase();
+  return employees.filter(e=>(site==="All"||e.site===site) &&
+    (!q||[e.name,e.id,e.dept,e.role].some(v=>String(v).toLowerCase().includes(q))));
+}
+function employeeRows(list,full=false) {
+  if(!list.length) return `<tr><td colspan="${full?6:5}" class="empty">No employee records found.</td></tr>`;
+  return list.map(e=>`<tr>
+    <td><div class="employee">${escapeHTML(e.name)}</div><div class="sub">${escapeHTML(e.role)}</div></td>
+    <td>${escapeHTML(e.id)}</td><td>${escapeHTML(e.dept)}</td>
+    ${full?`<td>${escapeHTML(e.role)}</td>`:""}
+    <td>${escapeHTML(e.site)}</td><td>${statusPill(e.status)}</td>
+  </tr>`).join("");
+}
+function recordActivity(title,detail) {
+  activities.unshift({title,detail});
+  activities=activities.slice(0,8);
+}
+function renderDashboard() {
+  const site=document.getElementById("siteFilter").value;
+  const list=filteredEmployees(site);
+  document.getElementById("totalMetric").textContent=list.length;
+  document.getElementById("deployedMetric").textContent=list.filter(e=>e.status==="Deployed").length;
+  document.getElementById("availableMetric").textContent=list.filter(e=>e.status==="Available").length;
+  document.getElementById("pendingMetric").textContent=requests.filter(r=>r.status==="Pending").length;
+  const sites=site==="All"?["Koppal","Fatehgarh","Head Office"]:[site];
+  document.getElementById("siteBars").innerHTML=sites.map(s=>{
+    const n=employees.filter(e=>e.site===s).length;
+    const max=Math.max(1,employees.length);
+    return `<div class="site-row"><div class="site-line"><strong>${escapeHTML(s)}</strong><span>${n} employees</span></div><div class="track"><div class="fill" style="width:${n/max*100}%"></div></div></div>`;
+  }).join("");
+  document.getElementById("activityList").innerHTML=activities.length?activities.slice(0,5).map(a=>`<div class="activity"><span class="dot"></span><div><strong>${escapeHTML(a.title)}</strong><p>${escapeHTML(a.detail)}</p></div></div>`).join(""):`<div class="empty">No recent activity.</div>`;
+  document.getElementById("dashboardTable").innerHTML=employeeRows(list.slice(0,5));
+}
+function renderEmployees() {
+  document.getElementById("employeeTable").innerHTML=employeeRows(
+    filteredEmployees(document.getElementById("employeeSite").value,document.getElementById("employeeSearch").value),true);
+  document.getElementById("availabilityTable").innerHTML=employeeRows(employees);
+  document.getElementById("requestEmployee").innerHTML=employees.map(e=>`<option value="${escapeHTML(e.id)}">${escapeHTML(e.id)} — ${escapeHTML(e.name)}</option>`).join("");
+}
+function renderRequests() {
+  const body=document.getElementById("requestTable");
+  body.innerHTML=requests.length?requests.map(r=>`<tr>
+    <td>${escapeHTML(r.id)}</td><td>${escapeHTML(r.employeeId)}</td><td>${escapeHTML(r.type)}</td>
+    <td>${escapeHTML(r.fromSite)}</td><td>${escapeHTML(r.toSite)}</td><td>${statusPill(r.status)}</td>
+  </tr>`).join(""):`<tr><td colspan="6" class="empty">No requests have been submitted.</td></tr>`;
+}
+function refresh() { saveAll(); renderDashboard(); renderEmployees(); renderRequests(); }
+function showPage(page) {
+  document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===page));
+  document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
+  const button=document.querySelector(`[data-page="${page}"]`);
+  document.getElementById("topTitle").textContent=button?button.textContent.trim().replace(/^[▦♙⇄◷⌂▤]\s*/,""):page;
+  if(page==="dashboard") renderDashboard();
+}
+document.querySelectorAll(".nav-item").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+document.getElementById("siteFilter").addEventListener("change",renderDashboard);
+document.getElementById("employeeSite").addEventListener("change",renderEmployees);
+document.getElementById("employeeSearch").addEventListener("input",renderEmployees);
+document.getElementById("addEmployeeBtn").addEventListener("click",()=>{
+  document.getElementById("employeeFormPanel").style.display="block";
+  document.getElementById("employeeFormPanel").scrollIntoView({behavior:"smooth"});
+});
+document.getElementById("cancelEmployee").addEventListener("click",()=>{
+  document.getElementById("employeeFormPanel").style.display="none";
+});
+document.getElementById("employeeForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const id=document.getElementById("empId").value.trim();
+  if(employees.some(x=>x.id.toLowerCase()===id.toLowerCase())) { alert("This employee ID already exists."); return; }
+  employees.push({
+    name:document.getElementById("empName").value.trim(),id,
+    dept:document.getElementById("empDept").value.trim(),
+    role:document.getElementById("empRole").value.trim(),
+    site:document.getElementById("empSite").value,
+    status:document.getElementById("empStatus").value
+  });
+  recordActivity("Employee record added",id+" added to the workforce register.");
+  e.target.reset(); document.getElementById("employeeFormPanel").style.display="none"; refresh();
+});
+document.getElementById("newRequestBtn").addEventListener("click",()=>{
+  if(!employees.length) { alert("Add an employee record before creating a request."); return; }
+  document.getElementById("requestFormPanel").style.display="block";
+  document.getElementById("requestFormPanel").scrollIntoView({behavior:"smooth"});
+});
+document.getElementById("cancelRequest").addEventListener("click",()=>{
+  document.getElementById("requestFormPanel").style.display="none";
+});
+document.getElementById("requestForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const emp=employees.find(x=>x.id===document.getElementById("requestEmployee").value);
+  if(!emp) { alert("Select an employee."); return; }
+  const type=document.getElementById("requestType").value;
+  const site=document.getElementById("requestSite").value;
+  requests.unshift({
+    id:"REQ"+String(Date.now()).slice(-7),employeeId:emp.id,type,
+    fromSite:emp.site,toSite:site,reason:document.getElementById("requestReason").value.trim(),
+    status:"Pending"
+  });
+  recordActivity("Workforce request submitted",type+" request created for "+emp.id+".");
+  e.target.reset(); document.getElementById("requestFormPanel").style.display="none"; refresh();
+});
+function downloadCSV(filename,rows) {
+  const csv=rows.map(row=>row.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\r\n");
+  const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8;"});
+  const url=URL.createObjectURL(blob); const a=document.createElement("a");
+  a.href=url; a.download=filename; a.click(); URL.revokeObjectURL(url);
+}
+function exportEmployees() {
+  downloadCSV("employee-register.csv",[
+    ["Name","Employee ID","Department","Role","Site","Availability"],
+    ...employees.map(e=>[e.name,e.id,e.dept,e.role,e.site,e.status])
+  ]);
+}
+function exportRequests() {
+  downloadCSV("workforce-requests.csv",[
+    ["Request ID","Employee ID","Type","From Site","To Site","Reason","Status"],
+    ...requests.map(r=>[r.id,r.employeeId,r.type,r.fromSite,r.toSite,r.reason,r.status])
+  ]);
+}
+refresh();
+</script>
+</body>
+</html>

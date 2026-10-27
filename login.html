@@ -4,28 +4,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign In | Serentica Manpower Management</title>
   <meta name="theme-color" content="#278B97">
+  <title>Sign In | Serentica Manpower Management</title>
 
   <style>
     :root {
       --teal: #33A7B5;
       --dark-teal: #278B97;
-      --navy: #173B43;
+      --text: #278B97;
       --muted: #687780;
       --background: #F5F7FA;
       --white: #FFFFFF;
       --border: #DCE5E8;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
       min-height: 100vh;
       font-family: Arial, Helvetica, sans-serif;
       background: var(--background);
-      color: var(--navy);
+      color: var(--text);
       display: flex;
       flex-direction: column;
     }
@@ -37,46 +39,30 @@
     }
 
     .brand {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 800;
       letter-spacing: 1.5px;
       color: var(--dark-teal);
     }
 
     .brand-subtitle {
-      margin-top: 5px;
+      margin-top: 6px;
       color: var(--muted);
       font-size: 12px;
-      letter-spacing: 1.6px;
+      letter-spacing: 1.3px;
       text-transform: uppercase;
     }
 
     main {
       flex: 1;
       display: grid;
-      grid-template-columns: 1fr 440px;
+      grid-template-columns: 1fr 420px;
       align-items: center;
       gap: 7%;
       max-width: 1200px;
       width: 100%;
       margin: auto;
       padding: 55px 35px;
-    }
-
-    .intro h1 {
-      font-size: clamp(32px, 4vw, 48px);
-      line-height: 1.15;
-      margin: 0 0 20px;
-      letter-spacing: -1px;
-    }
-
-    .intro h1 span { color: var(--dark-teal); }
-
-    .intro p {
-      font-size: 16px;
-      line-height: 1.8;
-      color: var(--muted);
-      max-width: 490px;
     }
 
     .accent {
@@ -87,69 +73,97 @@
       margin-bottom: 28px;
     }
 
+    .intro h1 {
+      font-size: clamp(32px, 4vw, 48px);
+      line-height: 1.2;
+      margin: 0 0 20px;
+      letter-spacing: -1px;
+    }
+
+    .intro h1 span {
+      color: var(--teal);
+    }
+
+    .intro p {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 500px;
+    }
+
     .login-card {
       background: var(--white);
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 14px;
       padding: 36px;
-      box-shadow: 0 14px 45px rgba(23, 59, 67, 0.07);
+      box-shadow: 0 12px 35px rgba(39, 139, 151, 0.08);
     }
 
     .login-card h2 {
-      font-size: 25px;
-      margin: 0 0 9px;
+      color: var(--dark-teal);
+      font-size: 26px;
+      margin: 0 0 10px;
     }
 
     .subheading {
       color: var(--muted);
       font-size: 14px;
-      line-height: 1.6;
-      margin: 0 0 28px;
+      line-height: 1.7;
+      margin-bottom: 28px;
     }
 
     label {
       display: block;
       font-size: 13px;
       font-weight: 700;
+      color: var(--text);
       margin: 18px 0 8px;
     }
 
     input {
+      display: block;
       width: 100%;
-      padding: 13px 14px;
+      padding: 13px;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 7px;
       font-size: 15px;
+      background: var(--white);
+      color: #333333;
       outline: none;
-      background: white;
     }
 
     input:focus {
       border-color: var(--teal);
-      box-shadow: 0 0 0 3px rgba(51, 167, 181, 0.13);
+      box-shadow: 0 0 0 3px rgba(51, 167, 181, 0.12);
     }
 
     button {
       width: 100%;
-      border: 0;
-      border-radius: 8px;
+      margin-top: 25px;
       padding: 14px;
-      margin-top: 24px;
+      border: none;
+      border-radius: 7px;
       background: var(--dark-teal);
-      color: white;
+      color: var(--white);
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
     }
 
-    button:hover { background: #206F79; }
-    button:disabled { opacity: .65; cursor: wait; }
+    button:hover {
+      background: #206F79;
+    }
+
+    button:disabled {
+      opacity: 0.65;
+      cursor: wait;
+    }
 
     #message {
       display: none;
       margin-top: 18px;
       padding: 12px;
-      border-radius: 8px;
+      border-radius: 7px;
       font-size: 13px;
       line-height: 1.6;
       overflow-wrap: anywhere;
@@ -170,31 +184,39 @@
     .security-note {
       color: var(--muted);
       font-size: 12px;
-      line-height: 1.6;
-      margin-top: 22px;
+      line-height: 1.7;
       text-align: center;
+      margin-top: 22px;
     }
 
     footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 12px;
-      color: var(--muted);
       background: var(--white);
       border-top: 1px solid var(--border);
+      color: var(--muted);
+      padding: 20px;
+      text-align: center;
+      font-size: 12px;
     }
 
     @media (max-width: 800px) {
       main {
         grid-template-columns: 1fr;
-        max-width: 520px;
-        padding: 38px 22px;
+        max-width: 540px;
         gap: 28px;
+        padding: 35px 22px;
       }
 
-      .intro h1 { font-size: 34px; }
-      .login-card { padding: 28px 23px; }
-      header { padding: 20px 24px; }
+      .intro h1 {
+        font-size: 34px;
+      }
+
+      .login-card {
+        padding: 28px 23px;
+      }
+
+      header {
+        padding: 20px 24px;
+      }
     }
   </style>
 </head>
@@ -202,22 +224,31 @@
 <body>
   <header>
     <div class="brand">SERENTICA</div>
-    <div class="brand-subtitle">Site Manpower Management System</div>
+    <div class="brand-subtitle">
+      Site Manpower Management System
+    </div>
   </header>
 
   <main>
     <section class="intro">
       <div class="accent"></div>
-      <h1>Welcome to a<br><span>smarter workforce</span><br>management system.</h1>
+
+      <h1>
+        Welcome to a<br>
+        <span>smarter workforce</span><br>
+        management system.
+      </h1>
+
       <p>
-        A central platform for managing site manpower,
-        deployment requests, workforce availability and
-        project-level coordination across renewable energy operations.
+        Manage site manpower, deployment requests,
+        workforce availability and project coordination
+        through a central platform for renewable energy operations.
       </p>
     </section>
 
     <section class="login-card">
       <h2>Sign in</h2>
+
       <p class="subheading">
         Enter your authorised account credentials to continue.
       </p>
@@ -228,7 +259,7 @@
           id="email"
           name="email"
           type="email"
-          placeholder="name@company.com"
+          placeholder="Enter your registered email"
           autocomplete="username"
           required
         >
@@ -243,13 +274,16 @@
           required
         >
 
-        <button id="signInButton" type="submit">Sign In</button>
+        <button id="signInButton" type="submit">
+          Sign In
+        </button>
+
         <div id="message" role="status" aria-live="polite"></div>
       </form>
 
       <p class="security-note">
         Access is restricted to authorised users.
-        Contact your system administrator if you need an account.
+        Contact your system administrator if you need assistance.
       </p>
     </section>
   </main>
@@ -262,9 +296,11 @@
     import { createClient } from
       "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-    // Replace both placeholders with your Supabase project details.
-    const SUPABASE_URL = "YOUR_PROJECT_URL";
-    const SUPABASE_PUBLISHABLE_KEY = "YOUR_PUBLISHABLE_KEY";
+    const SUPABASE_URL =
+      "https://jrpfrqyvnrejxmvdhtpx.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+      "sb_publishable__17fXF2g8apcNc281_yXbQ_HIAS1MPx";
 
     const form = document.getElementById("loginForm");
     const button = document.getElementById("signInButton");
@@ -275,34 +311,24 @@
       message.className = type;
     }
 
-    let supabase;
+    let supabase = null;
 
     try {
-      if (
-        SUPABASE_URL === "https://jrpfrqyvnrejxmvdhtpx.supabase.co/rest/v1/" ||
-        SUPABASE_PUBLISHABLE_KEY === "sb_publishable__17fXF2g8apcNc281_yXbQ_HIAS1MPx"
-      ) {
-        showMessage(
-          "Authentication setup is incomplete. Add your Supabase Project URL and publishable key before signing in."
-        );
-      } else {
-        supabase = createClient(
-          SUPABASE_URL,
-          SUPABASE_PUBLISHABLE_KEY
-        );
-        message.style.display = "none";
-      }
+      supabase = createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+      );
     } catch (error) {
-      showMessage("The authentication configuration could not be loaded.");
+      showMessage(
+        "The authentication service could not be initialized."
+      );
     }
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
 
       if (!supabase) {
-        showMessage(
-          "Authentication is not configured yet. Check the Supabase connection details."
-        );
+        showMessage("Authentication is not available. Refresh the page.");
         return;
       }
 
@@ -311,24 +337,29 @@
       message.style.display = "none";
 
       try {
-        const { data, error } = await supabase.auth.signInWithPassword({
-          email: document.getElementById("email").value.trim(),
-          password: document.getElementById("password").value
-        });
+        const { data, error } =
+          await supabase.auth.signInWithPassword({
+            email: document.getElementById("email").value.trim(),
+            password: document.getElementById("password").value
+          });
 
-        if (error) throw error;
+        if (error) {
+          throw error;
+        }
 
         if (!data.session || !data.user) {
           throw new Error("No authenticated session was returned.");
         }
 
-        // The welcome page will be protected in a later step.
-        window.location.assign("./welcome.html");
+        showMessage(
+          "Sign-in successful. Your account is authenticated. The welcome page and dashboard still need to be restored.",
+          "info"
+        );
       } catch (error) {
         showMessage(
           error.message === "Invalid login credentials"
-            ? "The email or password is incorrect, or the account has not been created."
-            : "Sign-in failed. Check your credentials and Supabase authentication settings."
+            ? "The email or password is incorrect, or the account needs to be confirmed."
+            : "Sign-in failed. Check your account confirmation and Supabase settings."
         );
       } finally {
         button.disabled = false;
